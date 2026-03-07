@@ -1,91 +1,43 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { MapPin, ArrowRight } from "lucide-react";
 import { properties } from "./data";
 import Link from "next/link";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: "easeOut" as const,
-    },
-  },
-};
 
 export default function FeaturedProperties() {
   return (
     <section id="properties" className="section-py bg-[#F5F0E8]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Label */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center"
-        >
+        <div className="text-center">
           <p className="font-['Cinzel'] text-xs tracking-[0.3em] text-[#F5A623] uppercase">
             Prime Locations
           </p>
-        </motion.div>
+        </div>
 
         {/* Heading */}
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="mt-4 text-center font-['Cormorant_Garamond'] text-4xl font-semibold text-[#1A1412] md:text-5xl"
-        >
+        <h2 className="mt-4 text-center font-['Cormorant_Garamond'] text-4xl font-semibold text-[#1A1412] md:text-5xl">
           Land Opportunities Across India
-        </motion.h2>
+        </h2>
 
         {/* Subtext */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="mx-auto mt-4 max-w-2xl text-center font-['Outfit'] text-lg text-[#8A8078]"
-        >
+        <p className="mx-auto mt-4 max-w-2xl text-center font-['Outfit'] text-lg text-[#8A8078]">
           Handpicked. Verified. High-potential.
-        </motion.p>
+        </p>
 
         {/* Properties Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-        >
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {properties.map((property) => (
-            <motion.div
+            <div
               key={property.id}
-              variants={itemVariants}
-              className="group overflow-hidden rounded-3xl bg-white"
+              className="overflow-hidden rounded-3xl bg-white transition-all hover:shadow-xl"
             >
               {/* Image */}
               <div className="relative h-56 overflow-hidden">
                 <img
                   src={property.image}
                   alt={property.title}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                 />
                 {/* Status Badge */}
                 <div
@@ -138,9 +90,9 @@ export default function FeaturedProperties() {
                   <ArrowRight size={16} />
                 </Link>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

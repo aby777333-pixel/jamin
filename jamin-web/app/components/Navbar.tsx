@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, MessageCircle } from "lucide-react";
+import { Menu, X, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const navLinks = [
   { name: "Properties", href: "#properties" },
@@ -27,10 +27,7 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" as const }}
+      <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
             ? "bg-white/95 backdrop-blur-md shadow-sm"
@@ -41,12 +38,14 @@ export default function Navbar() {
           <div className="flex h-[72px] items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center">
-              <span className="font-['Cormorant_Garamond'] text-2xl font-bold text-[#D42B2B]">
-                JAMIN
-              </span>
-              <span className="ml-1 font-['Cinzel'] text-sm text-[#1A1412]">
-                Properties
-              </span>
+              <div className="relative h-12 w-32">
+                <Image
+                  src="/logo.png"
+                  alt="Jamin Properties"
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -93,47 +92,41 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "100vh" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-white pt-[72px] md:hidden"
-          >
-            <div className="flex flex-col items-center gap-8 p-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-['Outfit'] text-xl font-medium text-[#1A1412]"
-                >
-                  {link.name}
-                </Link>
-              ))}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-white pt-[72px] md:hidden"
+        >
+          <div className="flex flex-col items-center gap-8 p-8">
+            {navLinks.map((link) => (
               <Link
-                href="#client-form"
+                key={link.name}
+                href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="mt-4 rounded-full bg-[#D42B2B] px-8 py-3 font-['Outfit'] font-semibold text-white"
+                className="font-['Outfit'] text-xl font-medium text-[#1A1412]"
               >
-                Enquire Now
+                {link.name}
               </Link>
-              <a
-                href="https://wa.me/919876543210"
-                className="flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 font-['Outfit'] font-semibold text-white"
-              >
-                <MessageCircle size={20} />
-                WhatsApp Us
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            ))}
+            <Link
+              href="#client-form"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mt-4 rounded-full bg-[#D42B2B] px-8 py-3 font-['Outfit'] font-semibold text-white"
+            >
+              Enquire Now
+            </Link>
+            <a
+              href="https://wa.me/919876543210"
+              className="flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 font-['Outfit'] font-semibold text-white"
+            >
+              <MessageCircle size={20} />
+              WhatsApp Us
+            </a>
+          </div>
+        </div>
+      )}
     </>
   );
 }

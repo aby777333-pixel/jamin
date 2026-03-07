@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { testimonials } from "./data";
 
@@ -9,38 +8,22 @@ export default function Testimonials() {
     <section className="section-py bg-[#FFF8EC]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Label */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center"
-        >
+        <div className="text-center">
           <p className="font-['Cinzel'] text-xs tracking-[0.3em] text-[#F5A623] uppercase">
             Investor Stories
           </p>
-        </motion.div>
+        </div>
 
         {/* Heading */}
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="mt-4 text-center font-['Cormorant_Garamond'] text-4xl font-semibold text-[#1A1412] md:text-5xl"
-        >
+        <h2 className="mt-4 text-center font-['Cormorant_Garamond'] text-4xl font-semibold text-[#1A1412] md:text-5xl">
           What Our Investors Say
-        </motion.h2>
+        </h2>
 
         {/* Testimonials Grid */}
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((testimonial, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: index * 0.1 }}
               className="rounded-2xl bg-white p-6 shadow-sm"
             >
               {/* Stars */}
@@ -71,7 +54,7 @@ export default function Testimonials() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

@@ -1,30 +1,28 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
 import { Phone, MessageCircle } from "lucide-react";
 
 export default function FloatingElements() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.scrollY > 300) {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      setScrollProgress(scrollPercent);
+      
+      if (scrollTop > 300) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
       }
     };
 
-    window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToForm = () => {
@@ -34,9 +32,9 @@ export default function FloatingElements() {
   return (
     <>
       {/* Scroll Progress Bar */}
-      <motion.div
+      <div
         className="fixed left-0 right-0 top-0 z-[9999] h-[2.5px] origin-left bg-gradient-to-r from-[#D42B2B] to-[#F5A623]"
-        style={{ scaleX }}
+        style={{ transform: `scaleX(${scrollProgress / 100})`, transformOrigin: "left" }}
       />
 
       {/* Floating Buttons */}

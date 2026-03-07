@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Instagram, Linkedin, Youtube } from "lucide-react";
 
 const footerLinks = {
@@ -34,12 +35,14 @@ export default function Footer() {
           {/* Column 1 - Logo & Description */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center">
-              <span className="font-['Cormorant_Garamond'] text-3xl font-bold text-white">
-                JAMIN
-              </span>
-              <span className="ml-1 font-['Cinzel'] text-sm text-white/60">
-                Properties
-              </span>
+              <div className="relative h-16 w-40">
+                <Image
+                  src="/logo.png"
+                  alt="Jamin Properties"
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </Link>
             <p className="mt-4 font-['Outfit'] text-sm text-white/60">
               India&apos;s premium land investment platform. Verified opportunities. Transparent process. Secure investments.

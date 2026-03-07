@@ -66,7 +66,7 @@ export default function BrokerEnquiryForm() {
   if (isSubmitted) {
     return (
       <section className="bg-[#1A1412] py-20">
-        <motion.div
+        <div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="mx-auto max-w-2xl px-4 text-center"
@@ -80,7 +80,7 @@ export default function BrokerEnquiryForm() {
           <p className="mt-4 font-['Outfit'] text-lg text-white/80">
             Our team will contact you within 24 hours to discuss partnership details.
           </p>
-        </motion.div>
+        </div>
       </section>
     );
   }
@@ -89,7 +89,7 @@ export default function BrokerEnquiryForm() {
     <section className="bg-[#1A1412] py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <motion.div
+        <div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -102,10 +102,10 @@ export default function BrokerEnquiryForm() {
           <p className="mt-4 font-['Outfit'] text-lg text-white/70">
             Partner with Jamin Properties and earn industry-leading commissions
           </p>
-        </motion.div>
+        </div>
 
         {/* Form */}
-        <motion.div
+        <div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -288,7 +288,7 @@ export default function BrokerEnquiryForm() {
               )}
             </button>
           </form>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

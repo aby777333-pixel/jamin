@@ -10,7 +10,7 @@ export default function Contact() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           {/* Left - Contact Details */}
-          <motion.div
+          <div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -85,10 +85,10 @@ export default function Contact() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right - Quick Contact Form */}
-          <motion.div
+          <div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -132,7 +132,7 @@ export default function Contact() {
                 <ArrowRight size={18} />
               </button>
             </form>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

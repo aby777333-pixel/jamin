@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -82,7 +81,7 @@ export default function ClientEnquiryForm() {
   if (isSubmitted) {
     return (
       <section id="client-form" className="bg-[#D42B2B] py-20">
-        <motion.div
+        <div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="mx-auto max-w-2xl px-4 text-center"
@@ -96,7 +95,7 @@ export default function ClientEnquiryForm() {
           <p className="mt-4 font-['Outfit'] text-lg text-white/80">
             Thank you for your inquiry. Our land advisors will contact you within 2 hours.
           </p>
-        </motion.div>
+        </div>
       </section>
     );
   }
@@ -106,7 +105,7 @@ export default function ClientEnquiryForm() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           {/* Left Side - Text */}
-          <motion.div
+          <div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -141,10 +140,10 @@ export default function ClientEnquiryForm() {
                 3 advisors available right now
               </span>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Side - Form */}
-          <motion.div
+          <div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -337,7 +336,7 @@ export default function ClientEnquiryForm() {
                 )}
               </button>
             </form>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
