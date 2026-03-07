@@ -1,31 +1,86 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Download, Filter, MoreVertical } from "lucide-react";
+import { supabaseAdmin } from "@/lib/supabase";
 
-const mockBrokerLeads = [
-  { id: 1, name: "Karthik Raj", phone: "+91 98765 43210", email: "karthik@email.com", state: "Tamil Nadu", district: "Chennai", landSize: "5-20 Acres", landType: "Residential Plots", experience: "3-7 years", date: "2025-03-07", status: "New" },
-  { id: 2, name: "Ramesh Gupta", phone: "+91 98765 43211", email: "ramesh@email.com", state: "Karnataka", district: "Bengaluru", landSize: "20-100 Acres", landType: "Commercial", experience: "7+ years", date: "2025-03-06", status: "Contacted" },
-  { id: 3, name: "Suresh Kumar", phone: "+91 98765 43212", email: "suresh@email.com", state: "Maharashtra", district: "Mumbai", landSize: "1-5 Acres", landType: "All Types", experience: "1-3 years", date: "2025-03-05", status: "New" },
-  { id: 4, name: "Vijay Malhotra", phone: "+91 98765 43213", email: "vijay@email.com", state: "Gujarat", district: "Ahmedabad", landSize: "5-20 Acres", landType: "Agricultural", experience: "3-7 years", date: "2025-03-04", status: "Contacted" },
-  { id: 5, name: "Arun Nair", phone: "+91 98765 43214", email: "arun@email.com", state: "Kerala", district: "Kochi", landSize: "1-5 Acres", landType: "Residential Plots", experience: "Less than 1 year", date: "2025-03-03", status: "New" },
-];
+interface BrokerLead {
+  id: string;
+  full_name: string;
+  phone: string;
+  email: string | null;
+  state: string | null;
+  district: string | null;
+  land_size: string | null;
+  land_type: string | null;
+  experience: string | null;
+  message: string | null;
+  status: string;
+  created_at: string;
+}
 
 const statusOptions = ["New", "Contacted", "Partnered", "Not Interested"];
 
 export default function BrokerLeads() {
+  const [leads, setLeads] = useState<BrokerLead[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
 
-  const filteredLeads = mockBrokerLeads.filter((lead) => {
+  useEffect(() => {
+    async function fetchLeads() {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from('broker_leads')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        if (error) throw error;
+        setLeads(data || []);
+      } catch (error) {
+        console.error("Error fetching leads:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchLeads();
+  }, []);
+
+  const filteredLeads = leads.filter((lead) => {
     const matchesSearch =
-      lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.phone.includes(searchTerm) ||
-      lead.email.toLowerCase().includes(searchTerm.toLowerCase());
+      lead.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.phone?.includes(searchTerm) ||
+      lead.email?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = filterStatus === "All" || lead.status === filterStatus;
     return matchesSearch && matchesStatus;
   });
+
+  const handleExport = () => {
+    const csv = [
+      ["Name", "Phone", "Email", "State", "District", "Land Size", "Land Type", "Experience", "Date", "Status"],
+      ...filteredLeads.map(lead => [
+        lead.full_name,
+        lead.phone,
+        lead.email || '',
+        lead.state || '',
+        lead.district || '',
+        lead.land_size || '',
+        lead.land_type || '',
+        lead.experience || '',
+        new Date(lead.created_at).toLocaleDateString(),
+        lead.status
+      ])
+    ].map(row => row.join(",")).join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "broker_leads.csv";
+    a.click();
+  };
 
   return (
     <div>
@@ -38,7 +93,7 @@ export default function BrokerLeads() {
             Manage partner broker registrations
           </p>
         </div>
-        <button className="flex items-center gap-2 rounded-full bg-[#F5A623] px-4 py-2 font-['Outfit'] text-sm font-semibold text-[#1A1412] hover:bg-[#D4891A]">
+        <button onClick={handleExport} className="flex items-center gap-2 rounded-full bg-[#F5A623] px-4 py-2 font-['Outfit'] text-sm font-semibold text-[#1A1412] hover:bg-[#D4891A]">
           <Download size={16} />
           Export CSV
         </button>
@@ -94,35 +149,45 @@ export default function BrokerLeads() {
               </tr>
             </thead>
             <tbody>
-              {filteredLeads.map((lead, index) => (
-                <tr key={lead.id} className="border-b border-[#E8E0D0]/50">
-                  <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{index + 1}</td>
-                  <td className="px-4 py-3 font-['Outfit'] text-sm font-medium text-[#1A1412]">{lead.name}</td>
-                  <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.phone}</td>
-                  <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.email}</td>
-                  <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.state}</td>
-                  <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.district}</td>
-                  <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.landSize}</td>
-                  <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.landType}</td>
-                  <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.experience}</td>
-                  <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.date}</td>
-                  <td className="px-4 py-3">
-                    <span className={`rounded-full px-2 py-1 font-['Outfit'] text-xs font-medium ${
-                      lead.status === "New" ? "bg-blue-100 text-blue-700" :
-                      lead.status === "Contacted" ? "bg-amber-100 text-amber-700" :
-                      lead.status === "Partnered" ? "bg-green-100 text-green-700" :
-                      "bg-red-100 text-red-700"
-                    }`}>
-                      {lead.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <button className="text-[#8A8078] hover:text-[#F5A623]">
-                      <MoreVertical size={18} />
-                    </button>
-                  </td>
+              {loading ? (
+                <tr>
+                  <td colSpan={12} className="px-4 py-8 text-center text-[#8A8078]">Loading...</td>
                 </tr>
-              ))}
+              ) : filteredLeads.length === 0 ? (
+                <tr>
+                  <td colSpan={12} className="px-4 py-8 text-center text-[#8A8078]">No leads found</td>
+                </tr>
+              ) : (
+                filteredLeads.map((lead, index) => (
+                  <tr key={lead.id} className="border-b border-[#E8E0D0]/50">
+                    <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{index + 1}</td>
+                    <td className="px-4 py-3 font-['Outfit'] text-sm font-medium text-[#1A1412]">{lead.full_name}</td>
+                    <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.phone}</td>
+                    <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.email || '-'}</td>
+                    <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.state || '-'}</td>
+                    <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.district || '-'}</td>
+                    <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.land_size || '-'}</td>
+                    <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.land_type || '-'}</td>
+                    <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{lead.experience || '-'}</td>
+                    <td className="px-4 py-3 font-['Outfit'] text-sm text-[#8A8078]">{new Date(lead.created_at).toLocaleDateString()}</td>
+                    <td className="px-4 py-3">
+                      <span className={`rounded-full px-2 py-1 font-['Outfit'] text-xs font-medium ${
+                        lead.status === "New" ? "bg-blue-100 text-blue-700" :
+                        lead.status === "Contacted" ? "bg-amber-100 text-amber-700" :
+                        lead.status === "Partnered" ? "bg-green-100 text-green-700" :
+                        "bg-red-100 text-red-700"
+                      }`}>
+                        {lead.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <button className="text-[#8A8078] hover:text-[#F5A623]">
+                        <MoreVertical size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
