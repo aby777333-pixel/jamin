@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+:root {
+  /* Primary */
+  --crimson: #D42B2B;
+  --crimson-dark: #B02020;
+  --gold: #F5A623;
+  --gold-dark: #D4891A;
+
+  /* Backgrounds */
+  --ivory: #FDFAF5;
+  --ivory-dark: #F5F0E8;
+  --charcoal: #1A1412;
+  --dark-bg: #0F0A0A;
+
+  /* Supporting */
+  --stone: #8A8078;
+  --cream-border: #E8E0D0;
+  --gold-tint: #FFF8EC;
+  --crimson-tint: #FFF0F0;
+}
+
+@theme inline {
+  --color-crimson: var(--crimson);
+  --color-crimson-dark: var(--crimson-dark);
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-ivory: var(--ivory);
+  --color-ivory-dark: var(--ivory-dark);
+  --color-charcoal: var(--charcoal);
+  --color-dark-bg: var(--dark-bg);
+  --color-stone: var(--stone);
+  --color-cream-border: var(--cream-border);
+  --color-gold-tint: var(--gold-tint);
+  --color-crimson-tint: var(--crimson-tint);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--crimson) transparent;
+}
+
+body {
+  background: var(--ivory);
+  color: var(--charcoal);
+  font-family: 'Outfit', 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--crimson);
+  color: white;
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--crimson) 0%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Section spacing */
+.section-py {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-py {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
